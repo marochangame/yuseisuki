@@ -117,3 +117,32 @@ h2{
   .top-area{min-height:22dvh;grid-template-columns:105px 1fr 54px}
   .dino-wrap{width:96px;height:96px;transform:scale(.9)}
 }
+
+
+/* v8: 問題ごとに変わる進行役キャラ */
+.dino-wrap {
+  width: 112px !important;
+  height: 112px !important;
+  display: grid !important;
+  place-items: center !important;
+  animation: idleBob 2.2s ease-in-out infinite;
+}
+
+.guide-char {
+  width: 112px;
+  height: 112px;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 0 rgba(70,80,90,.08));
+  transform-origin: 50% 88%;
+}
+
+.dino-wrap.celebrate .guide-char {
+  animation: dinoJump .82s cubic-bezier(.16,1.25,.31,1);
+}
+
+@media (orientation:landscape) {
+  .guide-char {
+    width: 96px;
+    height: 96px;
+  }
+}

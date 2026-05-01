@@ -1,4 +1,4 @@
-const CACHE_NAME = "yuseisuki-final-fixed-safe";
+const CACHE_NAME = "yuseisuki-random-characters-v8";
 const ASSETS = [
   "./",
   "./index.html",
@@ -6,7 +6,15 @@ const ASSETS = [
   "./script.js",
   "./manifest.json",
   "./icon-192.png",
-  "./icon-512.png"
+  "./icon-512.png",
+  "./characters/char_1.png",
+  "./characters/char_2.png",
+  "./characters/char_3.png",
+  "./characters/char_4.png",
+  "./characters/char_5.png",
+  "./characters/char_6.png",
+  "./characters/char_7.png",
+  "./characters/char_8.png"
 ];
 
 self.addEventListener("install", event => {

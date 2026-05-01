@@ -26,6 +26,19 @@
 
   const reactions = ["いいねぇー！", "それー！", "そっちすきー！", "やったぁ！", "うんうん！"];
 
+  const guideCharacters = [
+    {name:"うさぎ", src:"characters/char_1.png"},
+    {name:"いぬ", src:"characters/char_2.png"},
+    {name:"ねこ", src:"characters/char_3.png"},
+    {name:"くま", src:"characters/char_4.png"},
+    {name:"ぺんぎん", src:"characters/char_5.png"},
+    {name:"きょうりゅう", src:"characters/char_6.png"},
+    {name:"ひよこ", src:"characters/char_7.png"},
+    {name:"ハムスター", src:"characters/char_8.png"}
+  ];
+  let lastCharacterIndex = -1;
+
+
   const $ = (id) => document.getElementById(id);
   const startScreen = $("startScreen");
   const gameScreen = $("gameScreen");
@@ -42,6 +55,7 @@
   const burst = $("burst");
   const dinoWrap = $("dinoWrap");
   const soundBtn = $("soundBtn");
+  const guideChar = $("guideChar");
 
   let currentPair = pairs[0];
   let busy = false;
@@ -202,6 +216,15 @@
     return line;
   }
 
+  function pickGuideCharacter() {
+    if (!guideChar) return;
+    let i = Math.floor(Math.random() * guideCharacters.length);
+    if (guideCharacters.length > 1 && i === lastCharacterIndex) i = (i + 1) % guideCharacters.length;
+    lastCharacterIndex = i;
+    guideChar.src = guideCharacters[i].src;
+    guideChar.alt = guideCharacters[i].name;
+  }
+
   function renderPair() {
     leftEmoji.textContent = currentPair[0].emoji;
     rightEmoji.textContent = currentPair[1].emoji;
@@ -215,6 +238,7 @@
     if (pairs.length > 1 && i === lastIndex) i = (i + 1) % pairs.length;
     lastIndex = i;
     currentPair = pairs[i];
+    pickGuideCharacter();
     renderPair();
     setTimeout(playQuestionSound, 360);
   }
@@ -276,5 +300,6 @@
     });
   }
 
+  pickGuideCharacter();
   renderPair();
 })();
