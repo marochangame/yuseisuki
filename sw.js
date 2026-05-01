@@ -1,20 +1,13 @@
-const CACHE_NAME = "yuseisuki-v21-recreated-layout";
+const CACHE_NAME = "yuseisuki-v23-max-mascot";
 const ASSETS = [
   "./",
   "./index.html",
   "./style.css",
   "./script.js",
   "./manifest.json",
-  "./icon-192.png",
-  "./icon-512.png",
-  "./char_1.png",
-  "./char_2.png",
-  "./char_3.png",
-  "./char_4.png",
-  "./char_5.png",
-  "./char_6.png",
-  "./char_7.png",
-  "./char_8.png"
+  "./mascot.png",
+  "./home.png",
+  "./speaker.png"
 ];
 
 self.addEventListener("install", event => {
