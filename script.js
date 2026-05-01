@@ -73,25 +73,54 @@
     setupVoice();
   }
 
-  function speak(text, rate = 1.02, pitch = 1.28, volume = 1) {
+  function speak(text, options = {}) {
     ensureAudio();
 
+    const {
+      rate = 1.0,
+      pitch = 1.18,
+      volume = 1,
+      onend = null,
+      cancel = true
+    } = options;
+
     if (!("speechSynthesis" in window)) {
-      playFallbackMelody();
+      if (onend) setTimeout(onend, 700);
       return;
     }
 
     try {
-      speechSynthesis.cancel();
+      if (cancel) speechSynthesis.cancel();
       const u = new SpeechSynthesisUtterance(text);
       u.lang = "ja-JP";
       u.rate = rate;
       u.pitch = pitch;
       u.volume = volume;
       if (jpVoice) u.voice = jpVoice;
+
+      let ended = false;
+      u.onend = () => {
+        ended = true;
+        if (onend) onend();
+      };
+      u.onerror = () => {
+        if (!ended && onend) setTimeout(onend, 250);
+      };
+
       speechSynthesis.speak(u);
+
+      // iOSでonendが返らない時の保険。短文用。
+      if (onend) {
+        const fallbackMs = Math.max(650, text.length * 120);
+        setTimeout(() => {
+          if (!ended) {
+            ended = true;
+            onend();
+          }
+        }, fallbackMs);
+      }
     } catch (e) {
-      playFallbackMelody();
+      if (onend) setTimeout(onend, 650);
     }
   }
 
@@ -111,30 +140,56 @@
     osc.stop(t + duration + 0.03);
   }
 
-  function playFallbackMelody() {
-    beep(523, .10, 0.00, .12);
-    beep(659, .10, 0.12, .12);
-    beep(784, .14, 0.24, .12);
-  }
+  function playStartThenShowGame() {
+    ensureAudio();
 
-  function playStartSound() {
-    speak("はじめるよー！", 1.05, 1.35, 1);
-    beep(784, .07, 0.00, .07);
-    beep(1046, .10, 0.13, .06);
+    // ここでは次の音声でキャンセルしない。言い終わってから画面を切り替える。
+    speak("はじめるよー！", {
+      rate: 0.92,
+      pitch: 1.12,
+      volume: 1,
+      cancel: true,
+      onend: () => {
+        startScreen.classList.add("hide");
+        gameScreen.setAttribute("aria-hidden", "false");
+        setTimeout(playQuestionSound, 380);
+      }
+    });
+
+    // 小さな開始効果音。声を邪魔しない音量。
+    beep(784, .06, 0.04, .035);
+    beep(1046, .08, 0.20, .03);
   }
 
   function playQuestionSound() {
     const a = currentPair[0].name;
     const b = currentPair[1].name;
-    speak(`ユーセーくんは、${a}と${b}、どっちがすき？`, 1.02, 1.25, 1);
+    speak(`ユーセーくんは、${a}と${b}、どっちがすき？`, {
+      rate: 0.98,
+      pitch: 1.14,
+      volume: 1,
+      cancel: true
+    });
   }
 
   function playChoiceSound(chosenName) {
-    beep(880, .07, 0.00, .11);
-    beep(1175, .09, 0.09, .10);
-    beep(1568, .14, 0.21, .07);
+    // 効果音
+    beep(880, .07, 0.00, .08);
+    beep(1175, .09, 0.09, .075);
+    beep(1568, .14, 0.21, .055);
+
     const line = reactions[Math.floor(Math.random() * reactions.length)];
-    setTimeout(() => speak(`${chosenName}、${line}`, 1.08, 1.33, 1), 180);
+
+    // 効果音の後に声。ここは短く。
+    setTimeout(() => {
+      speak(`${chosenName}、${line}`, {
+        rate: 1.03,
+        pitch: 1.18,
+        volume: 1,
+        cancel: true
+      });
+    }, 190);
+
     return line;
   }
 
@@ -152,7 +207,7 @@
     lastIndex = i;
     currentPair = pairs[i];
     renderPair();
-    setTimeout(playQuestionSound, 260);
+    setTimeout(playQuestionSound, 360);
   }
 
   function makeBurst() {
@@ -193,16 +248,10 @@
     setTimeout(() => {
       busy = false;
       pickPair();
-    }, 1450);
+    }, 1700);
   }
 
-  startBtn.addEventListener("click", () => {
-    ensureAudio();
-    playStartSound();
-    startScreen.classList.add("hide");
-    gameScreen.setAttribute("aria-hidden", "false");
-    setTimeout(playQuestionSound, 900);
-  });
+  startBtn.addEventListener("click", playStartThenShowGame);
 
   leftChoice.addEventListener("click", () => handleChoice(0));
   rightChoice.addEventListener("click", () => handleChoice(1));
