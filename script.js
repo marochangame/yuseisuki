@@ -27,14 +27,14 @@
   const reactions = ["いいねぇー！", "それー！", "そっちすきー！", "やったぁ！", "うんうん！"];
 
   const guideCharacters = [
-    {name:"うさぎ", src:"characters/char_1.png"},
-    {name:"いぬ", src:"characters/char_2.png"},
-    {name:"ねこ", src:"characters/char_3.png"},
-    {name:"くま", src:"characters/char_4.png"},
-    {name:"ぺんぎん", src:"characters/char_5.png"},
-    {name:"きょうりゅう", src:"characters/char_6.png"},
-    {name:"ひよこ", src:"characters/char_7.png"},
-    {name:"ハムスター", src:"characters/char_8.png"}
+    {name:"うさぎ", src:"char_1.png"},
+    {name:"いぬ", src:"char_2.png"},
+    {name:"ねこ", src:"char_3.png"},
+    {name:"くま", src:"char_4.png"},
+    {name:"ぺんぎん", src:"char_5.png"},
+    {name:"きょうりゅう", src:"char_6.png"},
+    {name:"ひよこ", src:"char_7.png"},
+    {name:"ハムスター", src:"char_8.png"}
   ];
   let lastCharacterIndex = -1;
 
