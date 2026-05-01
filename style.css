@@ -158,3 +158,158 @@ h2{
 @media (orientation:landscape) {
   .guide-char { width: 100px !important; height: 100px !important; }
 }
+
+
+/* v19: 設計画面反映。キャラ大きく、選択肢を画面いっぱいに。 */
+.game-screen {
+  gap: 4px !important;
+  padding: max(8px, env(safe-area-inset-top)) 10px max(8px, env(safe-area-inset-bottom)) !important;
+}
+
+.top-area {
+  min-height: 31dvh !important;
+  height: 31dvh !important;
+  grid-template-columns: 42% 1fr 52px !important;
+  align-items: center !important;
+  gap: 2px !important;
+  padding-top: 0 !important;
+  overflow: visible !important;
+}
+
+.dino-wrap {
+  width: 100% !important;
+  height: 100% !important;
+  display: grid !important;
+  place-items: center !important;
+  overflow: visible !important;
+  align-self: center !important;
+  justify-self: center !important;
+  animation: idleBob 2.2s ease-in-out infinite;
+}
+
+.guide-char {
+  width: min(42vw, 190px) !important;
+  height: min(42vw, 190px) !important;
+  object-fit: contain !important;
+  transform: scale(1.45) translate(4px, 6px) !important;
+  transform-origin: center center !important;
+  filter: drop-shadow(0 10px 0 rgba(70,80,90,.08)) !important;
+}
+
+h2 {
+  font-size: clamp(27px, 8.8vw, 50px) !important;
+  line-height: 1.02 !important;
+  text-align: center !important;
+  margin: 0 !important;
+  transform: translateX(-6px);
+}
+
+.sound-btn {
+  width: 50px !important;
+  height: 50px !important;
+  border-radius: 17px !important;
+  font-size: 25px !important;
+  justify-self: end !important;
+}
+
+.choices {
+  flex: 1 !important;
+  min-height: 0 !important;
+  height: calc(69dvh - 32px) !important;
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 10px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.choice {
+  border-radius: 30px !important;
+  padding: 8px 6px 12px !important;
+  min-height: 0 !important;
+  height: 100% !important;
+  justify-content: center !important;
+  gap: 12px !important;
+  box-shadow: 0 10px 0 rgba(49,69,80,.16), inset 0 -7px 0 rgba(255,255,255,.38) !important;
+}
+
+.choice::before {
+  inset: 8px !important;
+  border-radius: 24px !important;
+  border-width: 4px !important;
+}
+
+.emoji {
+  font-size: clamp(112px, 31vw, 230px) !important;
+  line-height: 1 !important;
+  max-height: 48% !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.label {
+  font-size: clamp(25px, 7vw, 48px) !important;
+  padding: .34em .55em !important;
+  margin-top: 4px !important;
+}
+
+.adult-check {
+  height: 20px !important;
+  font-size: 16px !important;
+  line-height: 20px !important;
+  opacity: .62 !important;
+}
+
+/* iPhone縦長画面の最終調整 */
+@media (max-width: 430px) and (orientation: portrait) {
+  .top-area {
+    grid-template-columns: 38% 1fr 50px !important;
+    min-height: 29dvh !important;
+    height: 29dvh !important;
+  }
+
+  .guide-char {
+    width: 165px !important;
+    height: 165px !important;
+    transform: scale(1.58) translate(2px, 4px) !important;
+  }
+
+  h2 {
+    font-size: clamp(29px, 9vw, 48px) !important;
+    transform: translateX(-4px);
+  }
+
+  .choices {
+    height: calc(71dvh - 32px) !important;
+    gap: 9px !important;
+  }
+
+  .choice {
+    border-radius: 28px !important;
+    padding: 6px 4px 10px !important;
+  }
+
+  .emoji {
+    font-size: clamp(118px, 34vw, 210px) !important;
+  }
+
+  .label {
+    font-size: clamp(26px, 7.2vw, 42px) !important;
+  }
+}
+
+/* 小さい画面でキャラがタイトルに被りすぎないように */
+@media (max-height: 720px) and (orientation: portrait) {
+  .top-area {
+    min-height: 27dvh !important;
+    height: 27dvh !important;
+  }
+  .guide-char {
+    width: 150px !important;
+    height: 150px !important;
+    transform: scale(1.45) translate(0, 0) !important;
+  }
+  .choices {
+    height: calc(73dvh - 32px) !important;
+  }
+}
