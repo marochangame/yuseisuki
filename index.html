@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>ユーセー君はどっちが好き？</title>
+  <meta name="theme-color" content="#fff3aa" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="ユーセー君" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+  <link rel="icon" href="icon-192.png" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app" id="app">
+    <section class="top-area">
+      <div class="dino-wrap" id="dinoWrap" aria-hidden="true">
+        <div class="dino" id="dino">
+          <div class="spikes"><span></span><span></span><span></span></div>
+          <div class="head">
+            <span class="eye left"></span>
+            <span class="eye right"></span>
+            <span class="cheek left"></span>
+            <span class="cheek right"></span>
+            <span class="mouth"></span>
+          </div>
+          <div class="body">
+            <span class="belly"></span>
+            <span class="arm left"></span>
+            <span class="arm right"></span>
+            <span class="foot left"></span>
+            <span class="foot right"></span>
+          </div>
+          <span class="tail"></span>
+        </div>
+      </div>
+      <h1>ユーセーくんは<br>どっちがすき？</h1>
+      <button class="sound-btn" id="soundBtn" type="button" aria-label="音をならす">🔊</button>
+    </section>
+
+    <section class="choices" id="choices" aria-live="polite">
+      <button class="choice" id="leftChoice" type="button">
+        <span class="emoji" id="leftEmoji">🍎</span>
+        <span class="label" id="leftLabel">りんご</span>
+      </button>
+      <button class="choice" id="rightChoice" type="button">
+        <span class="emoji" id="rightEmoji">🍌</span>
+        <span class="label" id="rightLabel">バナナ</span>
+      </button>
+    </section>
+
+    <div class="reaction" id="reaction" aria-hidden="true">
+      <div class="burst" id="burst"></div>
+      <div class="reaction-text" id="reactionText">いいねぇ！</div>
+    </div>
+
+    <section class="adult-check" id="adultCheck">
+      いま：<span id="adultPair">りんご / バナナ</span>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
