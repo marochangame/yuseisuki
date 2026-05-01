@@ -143,17 +143,26 @@
   function playStartThenShowGame() {
     ensureAudio();
 
-    // v7：開始案内を長めにして、最後まで待ってから画面を切り替える。
-    const startText = "画面をタッチしてねー。はじまるよー。";
-
     let switched = false;
-    const switchToGame = () => {
+    const go = () => {
       if (switched) return;
       switched = true;
       startScreen.classList.add("hide");
       gameScreen.setAttribute("aria-hidden", "false");
-      setTimeout(playQuestionSound, 450);
+      setTimeout(playQuestionSound, 300);
     };
+
+    speak("はじめるよー！", {
+      rate: 0.95,
+      pitch: 1.12,
+      volume: 1,
+      cancel: true,
+      onend: go
+    });
+
+    // fallback (iOS対策)
+    setTimeout(go, 1200);
+  };
 
     speak(startText, {
       rate: 0.88,
