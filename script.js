@@ -24,7 +24,7 @@
     [{name:"きょうりゅう", emoji:"🦖"}, {name:"たまご", emoji:"🥚"}]
   ];
 
-  const reactions = ["いいねぇ！", "それー！", "そっちすき！", "やったぁ！", "うんうん！"];
+  const reactions = ["いいねぇー！", "それー！", "そっちすきー！", "やったぁ！", "うんうん！"];
 
   const $ = (id) => document.getElementById(id);
   const startScreen = $("startScreen");
@@ -45,18 +45,57 @@
 
   let currentPair = pairs[0];
   let busy = false;
-  let audioCtx = null;
   let lastIndex = 0;
+  let audioCtx = null;
+  let jpVoice = null;
+
+  function setupVoice() {
+    if (!("speechSynthesis" in window)) return;
+    const voices = speechSynthesis.getVoices();
+    jpVoice =
+      voices.find(v => v.lang === "ja-JP" && /Kyoko|Otoya|Japanese|日本/i.test(v.name)) ||
+      voices.find(v => v.lang === "ja-JP") ||
+      voices.find(v => v.lang && v.lang.startsWith("ja")) ||
+      null;
+  }
+
+  if ("speechSynthesis" in window) {
+    setupVoice();
+    speechSynthesis.onvoiceschanged = setupVoice;
+  }
 
   function ensureAudio() {
     if (!audioCtx) {
       const AudioContext = window.AudioContext || window.webkitAudioContext;
-      audioCtx = new AudioContext();
+      if (AudioContext) audioCtx = new AudioContext();
     }
-    if (audioCtx.state === "suspended") audioCtx.resume();
+    if (audioCtx && audioCtx.state === "suspended") audioCtx.resume();
+    setupVoice();
   }
 
-  function beep(freq, duration, delay = 0, volume = 0.18, type = "triangle") {
+  function speak(text, rate = 1.02, pitch = 1.28, volume = 1) {
+    ensureAudio();
+
+    if (!("speechSynthesis" in window)) {
+      playFallbackMelody();
+      return;
+    }
+
+    try {
+      speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = "ja-JP";
+      u.rate = rate;
+      u.pitch = pitch;
+      u.volume = volume;
+      if (jpVoice) u.voice = jpVoice;
+      speechSynthesis.speak(u);
+    } catch (e) {
+      playFallbackMelody();
+    }
+  }
+
+  function beep(freq, duration, delay = 0, volume = 0.10, type = "triangle") {
     if (!audioCtx) return;
     const t = audioCtx.currentTime + delay;
     const osc = audioCtx.createOscillator();
@@ -64,7 +103,7 @@
     osc.type = type;
     osc.frequency.setValueAtTime(freq, t);
     gain.gain.setValueAtTime(0.0001, t);
-    gain.gain.exponentialRampToValueAtTime(volume, t + 0.012);
+    gain.gain.exponentialRampToValueAtTime(volume, t + 0.01);
     gain.gain.exponentialRampToValueAtTime(0.0001, t + duration);
     osc.connect(gain);
     gain.connect(audioCtx.destination);
@@ -72,34 +111,31 @@
     osc.stop(t + duration + 0.03);
   }
 
-  // 「はじめるよー」っぽい、明るい上昇リズム
+  function playFallbackMelody() {
+    beep(523, .10, 0.00, .12);
+    beep(659, .10, 0.12, .12);
+    beep(784, .14, 0.24, .12);
+  }
+
   function playStartSound() {
-    ensureAudio();
-    beep(523, .11, 0.00, .18);
-    beep(659, .11, 0.13, .18);
-    beep(784, .16, 0.26, .20);
-    beep(1046, .20, 0.44, .16);
+    speak("はじめるよー！", 1.05, 1.35, 1);
+    beep(784, .07, 0.00, .07);
+    beep(1046, .10, 0.13, .06);
   }
 
-  // 「AとB、どっちがすき？」の短い問いかけリズム
   function playQuestionSound() {
-    ensureAudio();
-    const notes = [440,494,523,0,440,494,523,0,587,554,523,587,660];
-    let delay = 0;
-    notes.forEach(n => {
-      if (n === 0) { delay += .07; return; }
-      beep(n, .075, delay, .11);
-      delay += .085;
-    });
+    const a = currentPair[0].name;
+    const b = currentPair[1].name;
+    speak(`ユーセーくんは、${a}と${b}、どっちがすき？`, 1.02, 1.25, 1);
   }
 
-  // 子供向けアニメ風：ピコン→キラッ
-  function playChoiceSound() {
-    ensureAudio();
-    beep(740, .08, 0.00, .20, "triangle");
-    beep(988, .10, 0.09, .20, "triangle");
-    beep(1318, .16, 0.22, .16, "sine");
-    beep(1568, .18, 0.32, .12, "sine");
+  function playChoiceSound(chosenName) {
+    beep(880, .07, 0.00, .11);
+    beep(1175, .09, 0.09, .10);
+    beep(1568, .14, 0.21, .07);
+    const line = reactions[Math.floor(Math.random() * reactions.length)];
+    setTimeout(() => speak(`${chosenName}、${line}`, 1.08, 1.33, 1), 180);
+    return line;
   }
 
   function renderPair() {
@@ -116,7 +152,7 @@
     lastIndex = i;
     currentPair = pairs[i];
     renderPair();
-    setTimeout(playQuestionSound, 180);
+    setTimeout(playQuestionSound, 260);
   }
 
   function makeBurst() {
@@ -138,12 +174,13 @@
     if (busy) return;
     ensureAudio();
     busy = true;
-    playChoiceSound();
 
+    const chosen = currentPair[side];
     const button = side === 0 ? leftChoice : rightChoice;
     button.classList.add("pressed");
 
-    reactionText.textContent = reactions[Math.floor(Math.random() * reactions.length)];
+    const line = playChoiceSound(chosen.name);
+    reactionText.textContent = line.replace("ー！", "！");
     makeBurst();
     reaction.classList.add("show");
     dinoWrap.classList.add("celebrate");
@@ -152,11 +189,11 @@
     setTimeout(() => {
       reaction.classList.remove("show");
       dinoWrap.classList.remove("celebrate");
-    }, 820);
+    }, 980);
     setTimeout(() => {
       busy = false;
       pickPair();
-    }, 980);
+    }, 1450);
   }
 
   startBtn.addEventListener("click", () => {
@@ -164,12 +201,16 @@
     playStartSound();
     startScreen.classList.add("hide");
     gameScreen.setAttribute("aria-hidden", "false");
-    setTimeout(playQuestionSound, 700);
+    setTimeout(playQuestionSound, 900);
   });
 
   leftChoice.addEventListener("click", () => handleChoice(0));
   rightChoice.addEventListener("click", () => handleChoice(1));
-  soundBtn.addEventListener("click", playQuestionSound);
+
+  soundBtn.addEventListener("click", () => {
+    ensureAudio();
+    playQuestionSound();
+  });
 
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {

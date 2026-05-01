@@ -1,4 +1,4 @@
-const CACHE_NAME = "yuseisuki-start-v4";
+const CACHE_NAME = "yuseisuki-voice-v5";
 const ASSETS = [
   "./",
   "./index.html",
