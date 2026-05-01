@@ -143,13 +143,15 @@
   function playStartThenShowGame() {
     ensureAudio();
 
+    // final-safe：開始音声は短く「はじめるよー！」だけ。
+    // 読み上げが途中で切れたり、長文の一部だけ残ったりしないようにする。
     let switched = false;
-    const go = () => {
+    const switchToGame = () => {
       if (switched) return;
       switched = true;
       startScreen.classList.add("hide");
       gameScreen.setAttribute("aria-hidden", "false");
-      setTimeout(playQuestionSound, 300);
+      setTimeout(playQuestionSound, 400);
     };
 
     speak("はじめるよー！", {
@@ -157,27 +159,15 @@
       pitch: 1.12,
       volume: 1,
       cancel: true,
-      onend: go
-    });
-
-    // fallback (iOS対策)
-    setTimeout(go, 1200);
-  };
-
-    speak(startText, {
-      rate: 0.88,
-      pitch: 1.10,
-      volume: 1,
-      cancel: true,
       onend: switchToGame
     });
 
-    // iOSでonendが早く返る/遅れる時のため、最低2.6秒は画面を維持する保険。
-    setTimeout(switchToGame, 2600);
+    // iOSでonendが返らない時の保険。短文なので1.4秒で切り替え。
+    setTimeout(switchToGame, 1400);
 
     // 声を邪魔しない小さな開始効果音。
-    beep(784, .06, 0.04, .025);
-    beep(1046, .08, 0.28, .022);
+    beep(784, .06, 0.04, .02);
+    beep(1046, .08, 0.24, .018);
   }
 
   function playQuestionSound() {
