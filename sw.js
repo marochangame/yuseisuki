@@ -1,4 +1,4 @@
-const CACHE_NAME = "yuseikun-docchi-v1";
+const CACHE_NAME = "yuseisuki-start-v4";
 const ASSETS = [
   "./",
   "./index.html",
@@ -24,7 +24,5 @@ self.addEventListener("activate", event => {
 });
 
 self.addEventListener("fetch", event => {
-  event.respondWith(
-    caches.match(event.request).then(cached => cached || fetch(event.request))
-  );
+  event.respondWith(caches.match(event.request).then(cached => cached || fetch(event.request)));
 });
