@@ -522,3 +522,235 @@ h2 {
     font-size: clamp(142px, 42vw, 230px) !important;
   }
 }
+
+
+/* v21: 採用画像レイアウト完全寄せ
+   - キャラを左上から巨大表示
+   - タイトルは右側に小さく
+   - 選択肢は画面いっぱい
+   - カード内の白い余白をほぼ削る
+*/
+
+.game-screen {
+  padding: max(2px, env(safe-area-inset-top)) 7px max(4px, env(safe-area-inset-bottom)) !important;
+  gap: 0 !important;
+  background:
+    radial-gradient(circle at 20% 18%, rgba(255,255,255,.42), transparent 28%),
+    linear-gradient(160deg, #fff4a6 0%, #e9ffc8 47%, #bdf3ff 100%) !important;
+  overflow: hidden !important;
+}
+
+/* 上：キャラが主役。カードに少しかぶる位置まで下げる */
+.top-area {
+  height: 34dvh !important;
+  min-height: 34dvh !important;
+  display: grid !important;
+  grid-template-columns: 58% 1fr 50px !important;
+  align-items: center !important;
+  gap: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  position: relative !important;
+  z-index: 5 !important;
+}
+
+/* キャラ巨大化 */
+.dino-wrap {
+  width: 100% !important;
+  height: 100% !important;
+  display: grid !important;
+  place-items: end center !important;
+  align-self: end !important;
+  justify-self: start !important;
+  overflow: visible !important;
+  animation: none !important;
+  z-index: 7 !important;
+  pointer-events: none !important;
+}
+
+.guide-char {
+  width: 330px !important;
+  height: 330px !important;
+  object-fit: contain !important;
+  transform: scale(1.85) translate(-10px, 70px) !important;
+  transform-origin: bottom center !important;
+  filter: drop-shadow(0 13px 0 rgba(70,80,90,.10)) !important;
+}
+
+/* タイトルは小さく、右側 */
+h2 {
+  font-size: clamp(18px, 5.4vw, 31px) !important;
+  line-height: 1.02 !important;
+  margin: 0 !important;
+  text-align: center !important;
+  align-self: center !important;
+  justify-self: center !important;
+  transform: translate(-8px, 4px) !important;
+  letter-spacing: .01em !important;
+  color: #33424d !important;
+  text-shadow:
+    0 3px 0 rgba(255,255,255,.92),
+    0 0 8px rgba(255,255,255,.55) !important;
+  z-index: 8 !important;
+}
+
+/* 音ボタン */
+.sound-btn {
+  width: 50px !important;
+  height: 50px !important;
+  border-radius: 17px !important;
+  font-size: 25px !important;
+  align-self: center !important;
+  justify-self: end !important;
+  transform: translateY(0) !important;
+  z-index: 9 !important;
+}
+
+/* 下：2択を画面の主役に */
+.choices {
+  height: calc(66dvh - 22px) !important;
+  flex: none !important;
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 6px !important;
+  padding: 0 !important;
+  margin: -8px 0 0 !important;
+  min-height: 0 !important;
+  position: relative !important;
+  z-index: 4 !important;
+}
+
+.choice {
+  height: 100% !important;
+  min-height: 0 !important;
+  border-radius: 30px !important;
+  padding: 8px 3px 9px !important;
+  justify-content: center !important;
+  gap: 2px !important;
+  overflow: hidden !important;
+  box-shadow: 0 8px 0 rgba(49,69,80,.16), inset 0 -5px 0 rgba(255,255,255,.24) !important;
+  border: 5px solid rgba(255,255,255,.95) !important;
+}
+
+/* 左右カードを採用画像風に色分け */
+.choice:nth-child(1) {
+  background: linear-gradient(180deg, #ffd821 0%, #ffc600 100%) !important;
+}
+.choice:nth-child(2) {
+  background: linear-gradient(180deg, #a6df32 0%, #7eca1d 100%) !important;
+}
+
+.choice::before {
+  display: none !important;
+}
+
+/* 絵を巨大化 */
+.emoji {
+  font-size: clamp(180px, 53vw, 330px) !important;
+  line-height: .86 !important;
+  display: flex !important;
+  align-items: end !important;
+  justify-content: center !important;
+  height: 70% !important;
+  width: 100% !important;
+  max-height: none !important;
+  margin: 0 !important;
+  filter: drop-shadow(0 9px 0 rgba(70,80,90,.10)) !important;
+}
+
+/* ラベルは下部の白い小さな帯 */
+.label {
+  font-size: clamp(27px, 7.8vw, 48px) !important;
+  line-height: 1 !important;
+  padding: .28em .48em !important;
+  margin: 0 8px 4px !important;
+  width: calc(100% - 22px) !important;
+  border-radius: 22px !important;
+  background: rgba(255,255,246,.9) !important;
+  color: #26313a !important;
+  text-shadow: none !important;
+}
+
+/* 下の現在表示は薄く */
+.adult-check {
+  height: 18px !important;
+  font-size: 14px !important;
+  line-height: 18px !important;
+  opacity: .44 !important;
+  margin-top: 0 !important;
+  position: relative !important;
+  z-index: 6 !important;
+}
+
+.dino-wrap.celebrate .guide-char {
+  animation: dinoJump .82s cubic-bezier(.16,1.25,.31,1) !important;
+}
+
+/* iPhone Safari 縦画面 */
+@media (max-width: 430px) and (orientation: portrait) {
+  .top-area {
+    height: 32dvh !important;
+    min-height: 32dvh !important;
+    grid-template-columns: 56% 1fr 50px !important;
+  }
+
+  .guide-char {
+    width: 260px !important;
+    height: 260px !important;
+    transform: scale(1.72) translate(-8px, 54px) !important;
+  }
+
+  h2 {
+    font-size: clamp(17px, 5.2vw, 27px) !important;
+    transform: translate(-5px, 2px) !important;
+  }
+
+  .choices {
+    height: calc(68dvh - 22px) !important;
+    gap: 6px !important;
+    margin-top: -6px !important;
+  }
+
+  .choice {
+    border-radius: 28px !important;
+    padding: 7px 2px 8px !important;
+    border-width: 5px !important;
+  }
+
+  .emoji {
+    font-size: clamp(175px, 55vw, 300px) !important;
+    height: 70% !important;
+  }
+
+  .label {
+    font-size: clamp(27px, 8vw, 44px) !important;
+    margin: 0 7px 4px !important;
+    border-radius: 20px !important;
+  }
+}
+
+/* アドレスバー表示で縦が狭い時 */
+@media (max-height: 740px) and (orientation: portrait) {
+  .top-area {
+    height: 30dvh !important;
+    min-height: 30dvh !important;
+  }
+
+  .guide-char {
+    width: 235px !important;
+    height: 235px !important;
+    transform: scale(1.62) translate(-8px, 44px) !important;
+  }
+
+  h2 {
+    font-size: clamp(16px, 4.8vw, 24px) !important;
+  }
+
+  .choices {
+    height: calc(70dvh - 22px) !important;
+  }
+
+  .emoji {
+    font-size: clamp(166px, 50vw, 278px) !important;
+  }
+}
