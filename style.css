@@ -7,39 +7,18 @@ text-align:center;
 }
 
 .top{padding:20px;}
-
-#dino{
-font-size:60px;
-transition:transform 0.3s;
-}
-
+#dino{font-size:60px; transition:0.3s;}
 h1{font-size:24px;}
 
-.choices{
-display:flex;
-gap:20px;
-justify-content:center;
-margin-top:20px;
-}
-
+.choices{display:flex; gap:20px; justify-content:center; margin-top:20px;}
 .btn{
-font-size:30px;
-padding:20px;
-border-radius:20px;
-border:none;
-background:white;
-box-shadow:0 10px 0 rgba(0,0,0,0.1);
+font-size:30px; padding:20px; border-radius:20px;
+border:none; background:white; box-shadow:0 10px 0 rgba(0,0,0,0.1);
 }
-
-.btn:active{
-transform:scale(0.9);
-}
+.btn:active{transform:scale(0.9);}
 
 #effect{
-position:fixed;
-top:50%;
-left:50%;
+position:fixed; top:50%; left:50%;
 transform:translate(-50%,-50%);
-font-size:40px;
-display:none;
+font-size:40px; display:none;
 }
