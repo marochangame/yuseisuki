@@ -111,7 +111,7 @@
 
       // iOSでonendが返らない時の保険。短文用。
       if (onend) {
-        const fallbackMs = Math.max(650, text.length * 120);
+        const fallbackMs = Math.max(900, text.length * 140);
         setTimeout(() => {
           if (!ended) {
             ended = true;
@@ -143,22 +143,32 @@
   function playStartThenShowGame() {
     ensureAudio();
 
-    // ここでは次の音声でキャンセルしない。言い終わってから画面を切り替える。
-    speak("はじめるよー！", {
-      rate: 0.92,
-      pitch: 1.12,
+    // v7：開始案内を長めにして、最後まで待ってから画面を切り替える。
+    const startText = "画面をタッチしてねー。はじまるよー。";
+
+    let switched = false;
+    const switchToGame = () => {
+      if (switched) return;
+      switched = true;
+      startScreen.classList.add("hide");
+      gameScreen.setAttribute("aria-hidden", "false");
+      setTimeout(playQuestionSound, 450);
+    };
+
+    speak(startText, {
+      rate: 0.88,
+      pitch: 1.10,
       volume: 1,
       cancel: true,
-      onend: () => {
-        startScreen.classList.add("hide");
-        gameScreen.setAttribute("aria-hidden", "false");
-        setTimeout(playQuestionSound, 380);
-      }
+      onend: switchToGame
     });
 
-    // 小さな開始効果音。声を邪魔しない音量。
-    beep(784, .06, 0.04, .035);
-    beep(1046, .08, 0.20, .03);
+    // iOSでonendが早く返る/遅れる時のため、最低2.6秒は画面を維持する保険。
+    setTimeout(switchToGame, 2600);
+
+    // 声を邪魔しない小さな開始効果音。
+    beep(784, .06, 0.04, .025);
+    beep(1046, .08, 0.28, .022);
   }
 
   function playQuestionSound() {

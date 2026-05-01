@@ -1,4 +1,4 @@
-const CACHE_NAME = "yuseisuki-voice-v6-fixed-start";
+const CACHE_NAME = "yuseisuki-voice-v7-start-phrase";
 const ASSETS = [
   "./",
   "./index.html",
