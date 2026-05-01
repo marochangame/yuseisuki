@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>ユーセー君はどっちが好き？</title>
+  <meta name="theme-color" content="#fff3aa" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="ユーセー君" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+  <link rel="icon" href="icon-192.png" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <section class="start-screen" id="startScreen">
+      <div class="start-card">
+        <img src="icon-192.png" class="start-icon" alt="ユーセー君">
+        <h1 class="start-title">ユーセーくんは<br>どっちがすき？</h1>
+        <p class="start-sub">すきなほうを えらぼう！</p>
+        <button id="startBtn" class="start-btn" type="button">はじめる</button>
+      </div>
+    </section>
+
+    <section class="game-screen" id="gameScreen" aria-hidden="true">
+      <section class="top-area">
+        <div class="dino-wrap" id="dinoWrap" aria-hidden="true">
+          <img id="guideChar" class="guide-char" src="char_1.png" alt="">
+        </div>
+        <h2>ユーセーくんは<br>どっちがすき？</h2>
+        <button class="sound-btn" id="soundBtn" type="button" aria-label="もういちどきく">🔊</button>
+      </section>
+
+      <section class="choices">
+        <button class="choice" id="leftChoice" type="button">
+          <span class="emoji" id="leftEmoji">🍎</span>
+          <span class="label" id="leftLabel">りんご</span>
+        </button>
+        <button class="choice" id="rightChoice" type="button">
+          <span class="emoji" id="rightEmoji">🍌</span>
+          <span class="label" id="rightLabel">バナナ</span>
+        </button>
+      </section>
+
+      <div class="adult-check">いま：<span id="adultPair">りんご / バナナ</span></div>
+    </section>
+
+    <div class="reaction" id="reaction" aria-hidden="true">
+      <div class="burst" id="burst"></div>
+      <div class="reaction-text" id="reactionText">いいねぇ！</div>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
