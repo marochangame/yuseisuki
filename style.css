@@ -146,3 +146,15 @@ h2{
     height: 96px;
   }
 }
+
+
+/* v14: Gemini素材切り出しキャラ */
+.guide-char {
+  width: 118px !important;
+  height: 118px !important;
+  object-fit: contain !important;
+  filter: drop-shadow(0 8px 0 rgba(70,80,90,.08));
+}
+@media (orientation:landscape) {
+  .guide-char { width: 100px !important; height: 100px !important; }
+}

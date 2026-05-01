@@ -1,4 +1,4 @@
-const CACHE_NAME = "yuseisuki-random-characters-v9-no-folder";
+const CACHE_NAME = "yuseisuki-v14-sheet-characters";
 const ASSETS = [
   "./",
   "./index.html",

@@ -1,11 +1,10 @@
-ユーセー君はどっちが好き？ v9 no folder
+ユーセー君はどっちが好き？ v14 sheet characters
 
 修正内容：
-- iPhoneからGitHubへアップしやすいよう、charactersフォルダを廃止
-- char_1.png〜char_8.pngをすべてルート直下に配置
-- アプリ側も char_1.png のように直接読み込む形へ変更
-- 画面・音声・ランダムキャラ仕様はv8から維持
+- Geminiで作った1枚画像からキャラを切り出して使用
+- 採用キャラ：しばいぬ、あらいぐま、しまリス、こあら、ぱんだ、りんねこ、ふぇねっく、かめ
+- フォルダなし構成：char_1.png〜char_8.png はルート直下
+- 既存のアプリ機能・音声・ランダム表示は維持
 
-GitHubには、このZIPを解凍して出てきた中身を全部そのまま上書きアップロードしてください。
 確認URL：
-https://marochangame.github.io/yuseisuki/?v=9
+https://marochangame.github.io/yuseisuki/?v=14
